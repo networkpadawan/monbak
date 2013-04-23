@@ -30,7 +30,7 @@ cursor.execute(comm)
     
 comm = """INSERT INTO RPIMON(totalcpu, iowaitcpu, totalmem, usedmem, freemem, topname, topvalue, usedsize) \
           VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s,')""" % \
-          (totalcpu, iowaitcpu, totalmem, usedmem, freemem, topname, topvalue, usesize)
+          (totalcpu, iowaitcpu, totalmem, usedmem, freemem, topname, topvalue, usedsize)
 
 try:
    cursor.execute(comm)
