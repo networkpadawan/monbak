@@ -23,9 +23,9 @@ comm = """CREATE TABLE IF NOT EXISTS RPIMON (
       TOTALMEM FLOAT,
       USEDMEM FLOAT,
       FREEMEM FLOAT,
-      TOPNAME FLOAT,
+      TOPNAME CHAR(15),
       TOPVALUE FLOAT,
-      USEDSIZE FLOAT )"""
+      USEDSIZE FLOAT)"""
 
 cursor.execute(comm)
 
