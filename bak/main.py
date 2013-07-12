@@ -5,8 +5,21 @@
 # 1 mount error
 # 2 connection error
 # 3 rsync error, check log for more info
-import os,logging,sys,datetime,shutil,commands
+import os,logging,sys,datetime,shutil,commands, socket
 logging.basicConfig(filename='sync.log',level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+def check_turn()
+        me = print(socket.gethostname())
+        turn = open('turns.txt')
+        data = turn.read()
+        myturn = data.split('\n', 1)[0]
+        #while me != myturn
+                turn = open('turns.txt')
+                data = turn.read()
+                myturn = data.split('\n', 1)[0]
+
+
+
+
 def check_target():
         global platform_changeme
         #obtain host
@@ -84,6 +97,7 @@ test_connection()
 if connstatus == 0:
         test_mountpoint()
         if mountstatus == 0:
+                #checkturn()
                 #case 
                 checktarget() = rpixbmc
                         dd_rpi()
