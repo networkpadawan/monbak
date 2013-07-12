@@ -1,90 +1,98 @@
 #!/usr/bin/python
 #v1.1
-# zabbix status
+# status
 # 0 ok
 # 1 mount error
 # 2 connection error
 # 3 rsync error, check log for more info
 import os,logging,sys,datetime,shutil,commands
 logging.basicConfig(filename='sync.log',level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+def check_target():
+        global platform_changeme
+        #obtain host
+        return platform_changeme
+        
 def test_connection():
-        global zstatus
-        logging.info("trying storage ips")
-        for testip in open('storageips.txt', 'r'):
+        global connstatus
+        logging.info("trying storage ip")
+        for testip in open('storageip.txt', 'r'):
                 conn = os.system("ping -c 1 -W 1 " + testip)
                 if conn == 0:
-                        zstatus = 0;
+                        connstatus = 0;
                 else:
                         logging.error("connection error: %s is unreachable" %(testip.rstrip('\n')))
-                        zstatus = 2;
-        return zstatus
+                        connstatus = 2;
+        return connstatus
 
 def test_mountpoint():
-        global zstatus
+        global bkstatus
         logging.info("checking mountpoints")
         for path in open('mountpoints.txt', 'r'):
                 mount=os.path.ismount(path.rstrip('\n'))
                 if mount == True:
-                        zstatus = 0
+                        mountstatus = 0
                 else:
                         logging.error("mountpoint %s is unmounted, trying to force mount" %(path.rstrip('\n')))
-                        zstatus = force_mount()
-        return zstatus
+                        mountstatus = force_mount()
+        return mountstatus
 
 def force_mount():
-        global zstatus, mountlog
-        status, output = commands.getstatusoutput("mount -a")
-        zstatus = os.system ("mount -a")
-        if zstatus != 0:
-                zstatus = 1
+        global mountstatus
+        mountstatus, output = commands.getstatusoutput("mount -a")
+        #change mount!
+        mountstatus = os.system ("mount -a")
+        if mountstatus != 0:
+                mountstatus = 1
                 logging.error("force mount failed, reason:")
                 logging.error(output)
         else:
                 logging.info("force mount ok")
-        return zstatus
+        return mountstatus
 
-def backup_bacula():
-        global zbacula
-        dbuser='root'
-        dbpass='atwork@pass'
-        db='bacula'
-        logging.info("sending status to zabbix")
-        shutil.copytree('/var/lib/bacula/', '/media/remotenfs/BACULA/DAILY_BSRS/' + datetime.date.today().isoformat() + '/', ignore = shutil.ignore_patterns('*.sql','*.mail','*.state'))
+def dump_mysql(dbuser,dbpass,dbname,dbdestiny_changeme):
+        global dumpstatus
+        dbuser='user'
+        dbpass='password'
+        dbname='dbname'
         logging.info("dumping db")
-        os.system ("mysqldump -u"+dbuser +" -p"+dbpass + " --single-transaction --opt " + db +  '> /media/remotenfs/BACULA/DAILY_BSRS/' + datetime.date.today().isoformat() + '/bacula_mysql_dump.sql')
-        logging.info("syncing bacula config files")
-        zbacula=os.system("rsync -avrz /etc/bacula/ /media/remotenfs/BACULA/CONFIGS/synced/")
-        compare = datetime.date.today()
-        if compare.weekday() == 6:
-                logging.info("sunday, making separate copy of config files")
-                os.system('rsync -avrz /media/remotenfs/BACULA/CONFIGS/synced /media/remotenfs/BACULA/CONFIGS/copied')
-        return zbacula
+        os.system ("mysqldump -u"+dbuser +" -p"+dbpass + " --single-transaction --opt " + db + dbdestiny_changeme + datetime.date.today().isoformat() + '/mysql_dump.sql')
+        return dumpstatus
 
-def backup_volumes():
-        global zrsync
-        logging.info("syncing bacula volumes")
-        zrsync=os.system("rsync -avrz /media/Backups/VOLUMES/ /media/remotenfs/BACULA/VOLUMES/")
-        return zrsync
+def dd_rpi()
+        global status
+        #do
+        return status
+
+def changeme_rsync(whattobackup_changeme,destiny_changem):
+        global rsyncstatus
+        logging info("Rsyncing ...")
+        zrsync=os.system("rsync -avrz" + " " + "") 
+        return rsyncstatus
 
 def monitor():
-        global zbacula,zrsync,zstatus
-        logging.info("sending status to zabbix")
-        if zstatus == 0:
-                os.system("/usr/bin/zabbix_sender -z 172.22.6.164 -s CLOUD-GLOBAL -o " + str(zrsync) + " -k vols.rsync")
-                os.system("/usr/bin/zabbix_sender -z 172.22.6.164 -s CLOUD-GLOBAL -o " + str(zbacula) + " -k bsrs.rsync")
+        global allstatus_chageme_many
+        logging.info("sending status to puppet")
+        if bkstatus == 0:
+                #send all 0s to puppet
         else:
-                os.system("/usr/bin/zabbix_sender -z 172.22.6.164 -s CLOUD-GLOBAL -o " + str(zstatus) + " -k vols.rsync")
-                os.system("/usr/bin/zabbix_sender -z 172.22.6.164 -s CLOUD-GLOBAL -o " + str(zstatus) + " -k bsrs.rsync")
+                #send errors to puppet log
 
 #main
-logging.info("Starting Program")
+logging.info("Starting")
+checktarget()
 test_connection()
-test_mountpoint()
-if zstatus == 0:
+if connstatus == 0:
         test_mountpoint()
-        if zstatus == 0:
-                backup_bacula()
-                if zbacula == 0:
-                        backup_volumes()
+        if mountstatus == 0:
+                #case 
+                checktarget() = rpixbmc
+                        dd_rpi()
+                checktarget() = rpixbmc
+                        dd_rpi()
+                checktarget() = osx1
+                        #todo
+                checktarget() = vm01
+                        #todo
+                checktarget() = vm02
 monitor()
-logging.info("Ending Program")
+logging.info("Backup nded for " + "hostname")
