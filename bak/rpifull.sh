@@ -1,4 +1,3 @@
-sudo dd if=/dev/mmcblk0p2 of=/home/pi/networkdrive/my.img bs=1M
 #!/bin/bash
 
 # Setting up directories
@@ -56,22 +55,3 @@ service xbmc start
 service mysql start
 service cron start
 
-# If command has completed successfully, delete previous backups and exit
-if [ $RESULT = 0 ];
-   then
-      echo "Successful backup, previous backup files will be deleted."
-      rm -f $DIR/backup_*.tar.gz
-      mv $OFILE $OFILEFINAL
-      echo "Backup is being tarred. Please wait..."
-      tar zcf $OFILEFINAL.tar.gz $OFILEFINAL
-      rm -rf $OFILEFINAL
-      echo "RaspberryPI backup process completed! FILE: $OFILEFINAL.tar.gz"
-      exit 0
-# Else remove attempted backup file
-   else
-      echo "Backup failed! Previous backup files untouched."
-      echo "Please check there is sufficient space on the HDD."
-      rm -f $OFILE
-      echo "RaspberryPI backup process failed!"
-      exit 1
-fi
