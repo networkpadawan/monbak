@@ -60,7 +60,16 @@ def dump_mysql(dbuser,dbpass,dbname,dbdestiny_changeme):
 def rpibk():
     print "convert bash to py"
     #bprocess.call([rpifull.sh], cwd='/tmp')
+    date = datetime.datetime.now().strftime("%d%m%Y")
+    dd_dest = "/media/nas/.backups/" + me + "/" + date + ".img"
+    os.system ("sync") 
+    # Shut down some services before starting backup process
 
+    logging.info"Backing up SD card to USB HDD."
+    logging.info"This will take some time depending on your SD card size and read performance. Please wait..."
+    sdsize=os.system"blockdev --getsize64 /dev/mmcblk0"
+    os.system"pv -tpreb /dev/mmcblk0 -s " + SDSIZE + " | dd of=" + dd_dest + " bs=1M conv=sync,noerror iflag=fullblock"
+      
 def ubuntubk():
     print "not implemented"
 
