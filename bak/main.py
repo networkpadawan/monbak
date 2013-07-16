@@ -5,26 +5,20 @@
 # 1 mount error
 # 2 connection error
 # 3 rsync error, check log for more info
-import os,logging,sys,datetime,shutil,commands, socket
+import os,logging,sys,datetime,shutil,commands, socket,re
 logging.basicConfig(filename='sync.log',level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-def check_turn()
-        me = print(socket.gethostname())
-        turn = open('turns.txt')
-        data = turn.read()
-        myturn = data.split('\n', 1)[0]
-        #while me != myturn
-                turn = open('turns.txt')
-                data = turn.read()
-                myturn = data.split('\n', 1)[0]
-
-
-
-
 def check_target():
-        global platform_changeme
-        #obtain host
-        return platform_changeme
-        
+        me = (socket.gethostname())
+        #turn = open('turns.txt')
+        #data = turn.read()
+        #myturn = data.split('\n', 1)[0]
+        #while me != myturn
+        #        turn = open('turns.txt')
+        #        data = turn.read()
+        #        myturn = data.split('\n', 1)[0]
+        return me
+
+
 def test_connection():
         global connstatus
         logging.info("trying storage ip")
@@ -71,15 +65,16 @@ def dump_mysql(dbuser,dbpass,dbname,dbdestiny_changeme):
         os.system ("mysqldump -u"+dbuser +" -p"+dbpass + " --single-transaction --opt " + db + dbdestiny_changeme + datetime.date.today().isoformat() + '/mysql_dump.sql')
         return dumpstatus
 
-def dd_rpi()
-        global status
-        #do
-        return status
+def rpibk()
+    print "convert bash to py"
 
-def changeme_rsync(whattobackup_changeme,destiny_changem):
+def ubuntubk():
+    print "not implemented"
+
+def mybk(whattobackup_changeme,destiny_changem):
         global rsyncstatus
         logging info("Rsyncing ...")
-        zrsync=os.system("rsync -avrz" + " " + "") 
+        #zrsync=os.system("rsync -avrz" + " " + "") 
         return rsyncstatus
 
 def monitor():
@@ -96,17 +91,13 @@ checktarget()
 test_connection()
 if connstatus == 0:
         test_mountpoint()
-        if mountstatus == 0:
-                #checkturn()
-                #case 
-                checktarget() = rpixbmc
-                        dd_rpi()
-                checktarget() = rpixbmc
-                        dd_rpi()
-                checktarget() = osx1
-                        #todo
-                checktarget() = vm01
-                        #todo
-                checktarget() = vm02
+        if mountstatus == 0: 
+        options = {"rpiquarto" : rpibk,
+                "rpisala" : rpibk,
+                "rpi256" : rpibk,
+                "mini" : mybk,
+                "master01" : ubuntubk,
+                "services01" : ubuntubk,
+        }
 monitor()
-logging.info("Backup nded for " + "hostname")
+logging.info("Backup ended for " + "hostname")
