@@ -59,14 +59,16 @@ def dump_mysql(dbuser,dbpass,dbname,dbdestiny_changeme):
 
 def rpibk():
     print "convert bash to py"
+    #bprocess.call([rpifull.sh], cwd='/tmp')
 
 def ubuntubk():
     print "not implemented"
 
 def mybk():
         global rsyncstatus
+        rsync_destination = /media/stuff
         logging.info("Rsyncing ...")
-        #zrsync=os.system("rsync -avrz" + " " + "") 
+        #syncstatus=os.system("rsync -avrz " + " --files-from=" + mybk.txt + " / "+ rsync_destination) 
         return rsyncstatus
 
 def monitor():
