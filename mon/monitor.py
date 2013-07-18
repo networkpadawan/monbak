@@ -9,7 +9,7 @@ freemem = commands.getoutput("free -m | grep Mem | awk '{print $4}'")
 topname = commands.getoutput("ps -eo pcpu,pid,user,args | sort -k 1 -r -n | head -1 | awk '{print $4}'")
 topvalue = commands.getoutput("ps -eo pcpu,pid,user,args | sort -k 1 -r -n | head -1 | awk '{print $1}'")
 usedsize = commands.getoutput("df -h | awk 'NR==2'  | awk '{print $5}' | sed 's/%//g'")
-date = time.strftime('%Y-%m-%d %H:%M:%S')
+date = time.strftime('%Y-%m-%d %H:%M')
 host = socket.gethostname()
 #write to bd
 conn = MySQLdb.connect (host = "192.168.1.6", user = "testuser", passwd = "testuser", db = "testdb")
